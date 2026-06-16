@@ -11,11 +11,11 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Login />} />
-        <Route path="/dashboard" element={<StudentDashboard />} />
-        <Route path="/staff" element={<StudentControl />} />
-        <Route path="/staff/add" element={<StudentForm />} />
-        <Route path="/staff/edit/:id" element={<StudentForm />} />
-        <Route path="/admin/add-staff" element={<ProtectedRoute requiredRole="admin"><StaffForm /></ProtectedRoute>} />
+        <Route path="/dashboard" element={<ProtectedRoute><StudentDashboard /></ProtectedRoute>} />
+        <Route path="/staff" element={<ProtectedRoute allowedRoles={['staff', 'admin']}><StudentControl /></ProtectedRoute>} />
+        <Route path="/staff/add" element={<ProtectedRoute allowedRoles={['staff', 'admin']}><StudentForm /></ProtectedRoute>} />
+        <Route path="/staff/edit/:id" element={<ProtectedRoute allowedRoles={['staff', 'admin']}><StudentForm /></ProtectedRoute>} />
+        <Route path="/admin/add-staff" element={<ProtectedRoute allowedRoles={['admin']}><StaffForm /></ProtectedRoute>} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Router>

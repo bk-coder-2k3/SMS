@@ -18,8 +18,13 @@ const StudentDashboard = () => {
   const [loading, setLoading] = useState(true);
 
   const handleLogout = async () => {
-    await supabase.auth.signOut();
-    navigate("/");
+    try {
+        await supabase.auth.signOut();
+    } catch (error) {
+        console.error("Logout error:", error);
+    } finally {
+        navigate("/");
+    }
   };
 
   const [profileImage, setProfileImage] = useState(null);

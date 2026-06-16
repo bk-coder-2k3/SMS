@@ -3,7 +3,7 @@ import { Navigate } from 'react-router-dom';
 import { supabase } from '../utils/supabase';
 import { Box, CircularProgress } from '@mui/material';
 
-const ProtectedRoute = ({ children, requiredRole }) => {
+const ProtectedRoute = ({ children, allowedRoles }) => {
     const [loading, setLoading] = useState(true);
     const [authorized, setAuthorized] = useState(false);
 
@@ -14,8 +14,12 @@ const ProtectedRoute = ({ children, requiredRole }) => {
                 setAuthorized(false);
             } else {
                 const role = session.user.app_metadata?.role;
-                if (requiredRole && role !== requiredRole) {
-                    setAuthorized(false);
+                if (allowedRoles && allowedRoles.length > 0) {
+                    if (allowedRoles.includes(role)) {
+                        setAuthorized(true);
+                    } else {
+                        setAuthorized(false);
+                    }
                 } else {
                     setAuthorized(true);
                 }
@@ -23,7 +27,7 @@ const ProtectedRoute = ({ children, requiredRole }) => {
             setLoading(false);
         };
         checkAuth();
-    }, [requiredRole]);
+    }, [allowedRoles]);
 
     if (loading) {
         return (

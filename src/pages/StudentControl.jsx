@@ -30,8 +30,13 @@ const StudentControl = () => {
     const navigate = useNavigate();
 
     const handleLogout = async () => {
-        await supabase.auth.signOut();
-        navigate("/");
+        try {
+            await supabase.auth.signOut();
+        } catch (error) {
+            console.error("Logout error:", error);
+        } finally {
+            navigate("/");
+        }
     };
 
     const [ studata , setStudata ] = useState([]);
